@@ -178,4 +178,4 @@ Add all environment variables in the Vercel dashboard under **Settings → Envir
 
 ## 📄 License
 
-MIT License — built by [Your Name]
+MIT License — built by [Snehasis001]
