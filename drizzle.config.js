@@ -1,15 +1,9 @@
-import { defineConfig } from "drizzle-kit";
-import dotenv from "dotenv";
-
-dotenv.config({ path: ".env.local" }); // or just dotenv.config() if using .env
-
-// 👇 ADD THIS LINE HERE
-console.log("DATABASE_URL:", process.env.DATABASE_URL);
+import { defineConfig } from 'drizzle-kit'
 
 export default defineConfig({
-  schema: "./config/schema.js",
-  dialect: "postgresql",
+  schema: './config/schema.js',
+  dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_URL,
+    url: 'postgresql://neondb_owner:npg_h4f3JxtDWdnb@ep-dry-brook-a139l7l3-pooler.ap-southeast-1.aws.neon.tech/online_course?sslmode=require',
   },
-});
+})
