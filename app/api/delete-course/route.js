@@ -1,13 +1,19 @@
+import { NextResponse } from 'next/server'
 import { db } from '@/config/db'
 import { CourseList } from '@/config/schema'
 import { eq } from 'drizzle-orm'
-import { NextResponse } from 'next/server'
 
-export async function DELETE(req) {
+export const dynamic = 'force-dynamic'
+
+export async function DELETE(request) {
   try {
-    const { searchParams } = new URL(req.url)
+    const { searchParams } = new URL(request.url)
     const courseId = searchParams.get('courseId')
-    if (!courseId) return NextResponse.json({ error: 'courseId required' }, { status: 400 })
+
+    if (!courseId) {
+      return NextResponse.json({ error: 'courseId required' }, { status: 400 })
+    }
+
     await db.delete(CourseList).where(eq(CourseList.courseId, courseId))
     return NextResponse.json({ success: true })
   } catch (error) {
