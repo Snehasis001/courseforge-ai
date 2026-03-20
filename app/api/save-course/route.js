@@ -28,7 +28,10 @@ export async function POST(req) {
     return NextResponse.json({ course: result[0] })
   } catch (error) {
     console.error('Save course error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Cause:', error?.cause?.message)
+    return NextResponse.json({
+      error: error?.cause?.message || error.message
+    }, { status: 500 })
   }
 }
 
