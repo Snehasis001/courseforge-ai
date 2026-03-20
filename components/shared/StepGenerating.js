@@ -20,13 +20,19 @@ export default function StepGenerating({ formData, user, onBack }) {
   const [error, setError] = useState('')
   const [generated, setGenerated] = useState(null)
   const [done, setDone] = useState(false)
-  const hasRun = useRef(false)  // ← FIX: prevents double execution in React 18 Strict Mode
+  const hasRun = useRef(false)
 
   useEffect(() => {
     if (hasRun.current) return
     hasRun.current = true
     runGeneration()
   }, [])
+
+  const sanitizeIncludeVideo = (val) => {
+    if (val === true || val === 'true' || val === 'Yes') return 'Yes'
+    if (val === false || val === 'false' || val === 'No') return 'No'
+    return 'Yes'
+  }
 
   const runGeneration = async () => {
     for (let i = 0; i < 2; i++) {
@@ -39,10 +45,13 @@ export default function StepGenerating({ formData, user, onBack }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          topic: formData.topic, description: formData.description,
-          category: formData.category, level: formData.level,
-          duration: formData.duration, noOfChapters: formData.noOfChapters,
-          includeVideo: formData.includeVideo,
+          topic: formData.topic,
+          description: formData.description,
+          category: formData.category,
+          level: formData.level,
+          duration: formData.duration,
+          noOfChapters: formData.noOfChapters,
+          includeVideo: sanitizeIncludeVideo(formData.includeVideo),
         }),
       })
       const data = await res.json()
@@ -60,11 +69,15 @@ export default function StepGenerating({ formData, user, onBack }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          courseId, name: courseOutput.courseName,
-          category: formData.category, level: formData.level,
-          includeVideo: formData.includeVideo, duration: formData.duration,
+          courseId,
+          name: courseOutput.courseName,
+          category: formData.category,
+          level: formData.level,
+          includeVideo: sanitizeIncludeVideo(formData.includeVideo),
+          duration: formData.duration,
           createdBy: user?.primaryEmailAddress?.emailAddress,
-          courseOutput, publish: false,
+          courseOutput,
+          publish: false,
         }),
       })
       const saveData = await saveRes.json()
@@ -110,7 +123,9 @@ export default function StepGenerating({ formData, user, onBack }) {
               {done ? '✓' : '✦'}
             </div>
           </div>
-          <h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8, letterSpacing: '-0.5px' }}>{done ? 'Course Generated! 🎉' : 'Building Your Course'}</h2>
+          <h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8, letterSpacing: '-0.5px' }}>
+            {done ? 'Course Generated! 🎉' : 'Building Your Course'}
+          </h2>
           <p style={{ color: 'var(--text2)', marginBottom: 36, fontSize: 14, minHeight: 20 }}>{STAGES[stageIdx]?.msg}</p>
           <div style={{ maxWidth: 420, margin: '0 auto 36px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>

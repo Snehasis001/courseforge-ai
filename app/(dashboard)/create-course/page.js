@@ -19,22 +19,19 @@ export default function CreateCoursePage() {
     level: '',
     duration: '',
     noOfChapters: 5,
-    includeVideo: 'true',
+    includeVideo: 'Yes',
   })
 
   const handleNext = () => setStep(s => Math.min(s + 1, 2))
   const handleBack = () => setStep(s => Math.max(s - 1, 0))
-
   const progress = ((step) / (STEPS.length - 1)) * 100
 
   return (
     <div style={{ maxWidth: 760, margin: '0 auto' }}>
-      {/* Back button */}
       <button onClick={() => router.push('/dashboard')} style={{ background: 'none', border: 'none', color: 'var(--text2)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, marginBottom: 36, fontSize: 14, fontFamily: 'Outfit' }}>
         ← Back to dashboard
       </button>
 
-      {/* Page header */}
       <div style={{ marginBottom: 40 }}>
         <span className="tag-badge" style={{ marginBottom: 14, display: 'inline-flex' }}>AI Course Builder</span>
         <h1 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 700, letterSpacing: '-1px', marginBottom: 8 }}>
@@ -43,7 +40,6 @@ export default function CreateCoursePage() {
         <p style={{ color: 'var(--text2)', fontSize: 15 }}>Fill in the details and let Gemini AI build the perfect curriculum for you.</p>
       </div>
 
-      {/* Step indicator */}
       <div style={{ marginBottom: 40 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
           {STEPS.map((s, i) => (
@@ -68,17 +64,10 @@ export default function CreateCoursePage() {
         </div>
       </div>
 
-      {/* Step content */}
       <div className="glass-card" style={{ padding: '36px' }}>
-        {step === 0 && (
-          <StepTopic formData={formData} setFormData={setFormData} onNext={handleNext} />
-        )}
-        {step === 1 && (
-          <StepOptions formData={formData} setFormData={setFormData} onNext={handleNext} onBack={handleBack} />
-        )}
-        {step === 2 && (
-          <StepGenerating formData={formData} user={user} onBack={handleBack} />
-        )}
+        {step === 0 && <StepTopic formData={formData} setFormData={setFormData} onNext={handleNext} />}
+        {step === 1 && <StepOptions formData={formData} setFormData={setFormData} onNext={handleNext} onBack={handleBack} />}
+        {step === 2 && <StepGenerating formData={formData} user={user} onBack={handleBack} />}
       </div>
     </div>
   )
