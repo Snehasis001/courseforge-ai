@@ -19,7 +19,7 @@ export default function CreateCoursePage() {
     level: '',
     duration: '',
     noOfChapters: 5,
-    includeVideo: 'Yes',
+    includeVideo: 'true',
   })
 
   const handleNext = () => setStep(s => Math.min(s + 1, 2))
